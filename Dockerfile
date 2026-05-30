@@ -1,5 +1,5 @@
 # Use Node 18 as parent image
-FROM node:18
+FROM node:18-alpine as application
 
 # Change the working directory on the Docker image to /app
 WORKDIR /app
@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of project files into this image
 COPY . .
 
+FROM application as final
+RUN npm install --production
+COPY . .
 # Expose application port
 EXPOSE 3000
 
